@@ -6,8 +6,6 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-
   <div class="keys">
     <div data-key="65" class="key">
       <kbd>A</kbd>
@@ -57,10 +55,35 @@
   <audio data-key="75" src="sounds/tom.wav"></audio>
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
-<script>
+  <script>
+    window.addEventListener('keydown', event => {
+      const keyCode = event.keyCode
 
-</script>
+      // Get the audio element for the corresponding key code if it exists.
+      const audioElement = document.querySelector(`audio[data-key="${keyCode}"]`)
 
+      if (audioElement == null) return
 
+      // "Rewind" the audio element to the initial time. If it's already playing, it won't play again, meaning we can't
+      // play the same element multiple times in quick succession. Setting the time to 0 effectively rewinds it.
+      audioElement.currentTime = 0
+      audioElement.play()
+
+      // Apply slick styles to the on screen key.
+      const onScreenKeyElement = document.querySelector(`div[data-key="${keyCode}"]`)
+      onScreenKeyElement.classList.add('playing')
+    })
+
+    // Remove slick styles from the on screen key when the CSS transition is doneski.
+    document.querySelectorAll('.key').forEach(onScreenKeyElement => {
+      onScreenKeyElement.addEventListener('transitionend', event => {
+
+        // Transform is the longest running transition so that's the only one we want to remove the class for.
+        if (event.propertyName !== 'transform') return
+
+        onScreenKeyElement.classList.remove('playing')
+      })
+    })
+  </script>
 </body>
 </html>
