@@ -5,16 +5,13 @@
   <title>JS + CSS Clock</title>
 </head>
 <body>
-
-
-    <div class="clock">
-      <div class="clock-face">
-        <div class="hand hour-hand"></div>
-        <div class="hand min-hand"></div>
-        <div class="hand second-hand"></div>
-      </div>
+  <div class="clock">
+    <div class="clock-face">
+      <div class="hand hour-hand"></div>
+      <div class="hand min-hand"></div>
+      <div class="hand second-hand"></div>
     </div>
-
+  </div>
 
   <style>
     html {
@@ -61,12 +58,27 @@
       background:black;
       position: absolute;
       top:50%;
+
+      transform-origin: 100%;
+      transform: rotate(90deg);
+      transition: transform 0.05s;
+      transition-timing-function: cubic-bezier(1,.54,.63,1.43);
     }
 
   </style>
 
   <script>
+    setInterval(() => {
+      const now = new Date()
 
+      const secondDegrees = (now.getSeconds() * 360 / 60) + 90
+      const minuteDegrees = (now.getMinutes() * 360 / 60) + 90
+      const hourDegrees = (now.getHours() * 360 / 12) + 90
+
+      document.querySelector('.second-hand').style.transform = `rotate(${secondDegrees}deg)`
+      document.querySelector('.min-hand').style.transform = `rotate(${minuteDegrees}deg)`
+      document.querySelector('.hour-hand').style.transform = `rotate(${hourDegrees}deg)`
+    }, 1000)
 
   </script>
 </body>
